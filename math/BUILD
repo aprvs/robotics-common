@@ -18,6 +18,20 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+cc_library(
+    name = "epsilons",
+    hdrs = [
+        "epsilons.h",
+    ],
+    srcs = [
+        "epsilons.cc",
+    ],
+    deps = [
+        "//common:type_traits",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 cc_test(
     name = "geometry_defs_test",
     srcs = [
