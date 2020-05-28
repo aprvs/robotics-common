@@ -52,8 +52,9 @@ struct EnumTrait<robotics_common::math::Axis3d> {
 
 template <>
 struct EnumListTrait<robotics_common::math::Axis3d> {
-  std::array<robotics_common::math::Axis3d,
-             EnumTrait<robotics_common::math::Axis3d>::num_values()>
+  constexpr static std::array<
+      robotics_common::math::Axis3d,
+      EnumTrait<robotics_common::math::Axis3d>::num_values()>
   values() {
     return {{robotics_common::math::Axis3d::kX,
              robotics_common::math::Axis3d::kY,
@@ -85,8 +86,9 @@ struct EnumTrait<robotics_common::math::Axis4d> {
 
 template <>
 struct EnumListTrait<robotics_common::math::Axis4d> {
-  std::array<robotics_common::math::Axis4d,
-             EnumTrait<robotics_common::math::Axis4d>::num_values()>
+  constexpr static std::array<
+      robotics_common::math::Axis4d,
+      EnumTrait<robotics_common::math::Axis4d>::num_values()>
   values() {
     return {
         {robotics_common::math::Axis4d::kW, robotics_common::math::Axis4d::kX,
