@@ -8,6 +8,7 @@ namespace math {
 
 // Following the definitions from
 // http://academics.wellesley.edu/Astronomy/kmcleod/Toolkit/scinot.html
+/// @class Epsilon
 enum class Epsilon {
   kOne,
   kOneTenth,
@@ -18,9 +19,11 @@ enum class Epsilon {
   kOneMillionth,
   kTenMillionth,
   kHundredMillionth,
-  kBillionth,
+  kOneBillionth,
 };
 
+/// @param[in] epsilon  epsilon enumeration
+/// @return  floating point value corresponding to the precision
 double EpsilonValue(Epsilon epsilon);
 
 }  // namespace math
@@ -52,7 +55,7 @@ struct EnumTrait<robotics_common::math::Epsilon> {
         return "1.0e-7";
       case robotics_common::math::Epsilon::kHundredMillionth:
         return "1.0e-8";
-      case robotics_common::math::Epsilon::kBillionth:
+      case robotics_common::math::Epsilon::kOneBillionth:
         return "1.0e-9";
         // no default. Catch missing enum cases at compile time
     }

@@ -23,7 +23,7 @@ double EpsilonValue(Epsilon epsilon) {
       return 1.0e-7;
     case Epsilon::kHundredMillionth:
       return 1.0e-8;
-    case Epsilon::kBillionth:
+    case Epsilon::kOneBillionth:
       return 1.0e-9;
       // no default. Catch missing enum cases at compile time
   }
