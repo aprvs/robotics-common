@@ -47,7 +47,22 @@ cc_library(
         ":epsilons",
         ":geometry_defs",
         "//common:error_or",
-        "@eigen//:eigen3",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "quaternion",
+    hdrs = [
+        "unit_quaternion.h",
+    ],
+    srcs = [
+        "unit_quaternion.cc",
+    ],
+    deps = [
+        ":epsilons",
+        ":geometry_defs",
+        "//common:error_or",
     ],
     visibility = ["//visibility:public"],
 )
@@ -81,6 +96,17 @@ cc_test(
     ],
     deps = [
         ":vector",
+        "@com_googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "unit_quaternion_test",
+    srcs = [
+        "unit_quaternion_test.cc",
+    ],
+    deps = [
+        ":quaternion",
         "@com_googletest//:gtest_main",
     ],
 )
