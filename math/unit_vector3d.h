@@ -4,6 +4,7 @@
 #include "common/error_or.h"
 #include "robotics-common/math/const_vector3d.h"
 #include "robotics-common/math/epsilons.h"
+#include "robotics-common/math/vector3d.h"
 
 namespace robotics_common {
 namespace math {
@@ -42,6 +43,10 @@ class UnitVector3d : public ConstVector3d<UnitVector3d> {
     return ToBase()->Rotate<UnitVector3d>(rotation);
   }
 
+  Vector3d operator*(double scalar) const {
+    return ToBase()->template operator*<Vector3d>(scalar);
+  }
+
  private:
   ConstVector3d<UnitVector3d> const* ToBase() const {
     return static_cast<ConstVector3d<UnitVector3d> const*>(this);
@@ -55,6 +60,13 @@ class UnitVector3d : public ConstVector3d<UnitVector3d> {
   double y_;
   double z_;
 };
+
+namespace vector {
+
+common::ErrorOr<UnitVector3d> Normalize(const Vector3d& vector,
+                                        Epsilon epsilon);
+
+}  // namespace vector
 
 }  // namespace math
 }  // namespace robotics_common

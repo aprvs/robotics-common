@@ -21,7 +21,7 @@ common::ErrorOr<UnitVector3d> UnitVector3d::Construct(double x, double y,
                                                       double z,
                                                       Epsilon epsilon) {
   double length = std::sqrt(x * x + y * y + z * z);
-  if (std::fabs(length - 1.0) > EpsilonValue(epsilon)) {
+  if (std::fabs(length - 1.0) >= EpsilonValue(epsilon)) {
     return common::Error::kInvalidArgument;
   }
   return UnitVector3d(x / length, y / length, z / length);
@@ -52,6 +52,15 @@ void UnitVector3d::Set(Axis3d axis, double value) {
       // no default. Catch missing enums cases at compile time
   }
 }
+
+namespace vector {
+
+common::ErrorOr<UnitVector3d> Normalize(const Vector3d& vector,
+                                        Epsilon epsilon) {
+  return UnitVector3d::Construct(vector.x(), vector.y(), vector.z(), epsilon);
+}
+
+}  // namespace vector
 
 }  // namespace math
 }  // namespace robotics_common

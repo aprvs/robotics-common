@@ -63,6 +63,11 @@ class Vector3d : public ConstVector3d<Vector3d> {
   double z_;
 };
 
+template <typename U>
+inline Vector3d operator*(double scalar, const ConstVector3d<U>& vector) {
+  return vector.template operator*<Vector3d>(scalar);
+}
+
 }  // namespace math
 }  // namespace robotics_common
 

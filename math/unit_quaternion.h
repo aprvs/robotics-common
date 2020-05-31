@@ -19,7 +19,7 @@ class UnitQuaternion {
   static common::ErrorOr<UnitQuaternion> Construct(double w, double x, double y,
                                                    double z, Epsilon epsilon);
 
-  static UnitQuaternion FromAxisAngle(double anngle, const UnitVector3d& axis);
+  static UnitQuaternion FromAxisAngle(double angle, const UnitVector3d& axis);
 
   UnitQuaternion(const UnitQuaternion&) = default;
   UnitQuaternion& operator=(const UnitQuaternion&) = default;

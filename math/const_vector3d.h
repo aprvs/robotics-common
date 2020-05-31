@@ -146,9 +146,9 @@ class ConstVector3d {
   inline double GetZ() const { return ToDerived()->z(); }
 };
 
-template <typename U>
+template <typename R, typename U>
 inline typename std::enable_if<std::is_base_of<ConstVector3d<U>, U>::value,
-                               U>::type
+                               R>::type
 operator*(double scalar, const U& derived) {
   return derived * scalar;
 }

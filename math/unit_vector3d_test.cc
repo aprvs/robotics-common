@@ -139,5 +139,37 @@ TEST(UnitVector3dTest, RotateTest) {
       result.GeometricallyEquals(UnitVector3d::kYAxis, Epsilon::kOneBillionth));
 }
 
+TEST(UnitVector3dTest, ScaleTest) {
+  Vector3d scaled = UnitVector3d::kXAxis * 10.0;
+  EXPECT_DOUBLE_EQ(scaled.x(), 10.0);
+  EXPECT_DOUBLE_EQ(scaled.y(), 0.0);
+  EXPECT_DOUBLE_EQ(scaled.z(), 0.0);
+
+  scaled = 5.0 * UnitVector3d::kXAxis;
+  EXPECT_DOUBLE_EQ(scaled.x(), 5.0);
+  EXPECT_DOUBLE_EQ(scaled.y(), 0.0);
+  EXPECT_DOUBLE_EQ(scaled.z(), 0.0);
+}
+
+TEST(UnitVector3dTest, NormalizeTest) {
+  common::ErrorOr<UnitVector3d> result =
+      vector::Normalize(Vector3d(1.99, 0.0, 0.0), Epsilon::kOne);
+  ASSERT_TRUE(result.HasValue());
+  UnitVector3d unit = result.ValueOrDie();
+  EXPECT_DOUBLE_EQ(unit.x(), 1.0);
+  EXPECT_DOUBLE_EQ(unit.y(), 0.0);
+  EXPECT_DOUBLE_EQ(unit.z(), 0.0);
+
+  result = vector::Normalize(Vector3d(0.0, 0.0, 0.0), Epsilon::kOne);
+  EXPECT_FALSE(result.HasValue());
+
+  result = vector::Normalize(Vector3d(0.5, 0.5, 1.0), Epsilon::kOne);
+  ASSERT_TRUE(result.HasValue());
+  unit = result.ValueOrDie();
+  EXPECT_DOUBLE_EQ(unit.x(), std::sqrt(1.0 / 6.0));
+  EXPECT_DOUBLE_EQ(unit.y(), std::sqrt(1.0 / 6.0));
+  EXPECT_DOUBLE_EQ(unit.z(), std::sqrt(2.0 / 3.0));
+}
+
 }  // namespace math
 }  // namespace robotics_common
