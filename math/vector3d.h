@@ -49,6 +49,10 @@ class Vector3d : public ConstVector3d<Vector3d> {
     *this = *this - other;
   }
 
+  Vector3d Rotate(const UnitQuaternion& rotation) const {
+    return ToBase()->Rotate<Vector3d>(rotation);
+  }
+
  private:
   ConstVector3d<Vector3d> const* ToBase() const {
     return static_cast<ConstVector3d<Vector3d> const*>(this);

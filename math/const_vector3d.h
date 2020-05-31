@@ -6,6 +6,7 @@
 
 #include "robotics-common/math/epsilons.h"
 #include "robotics-common/math/geometry_defs.h"
+#include "robotics-common/math/unit_quaternion.h"
 
 namespace robotics_common {
 namespace math {
@@ -106,8 +107,38 @@ class ConstVector3d {
     return this->template operator+<U, U>(-other);
   }
 
+  template <typename R>
+  R Rotate(const UnitQuaternion& rot_q) const {
+    double q_w_2 = rot_q.w() * rot_q.w();
+    double q_x_2 = rot_q.x() * rot_q.x();
+    double q_y_2 = rot_q.y() * rot_q.y();
+    double q_z_2 = rot_q.z() * rot_q.z();
+    double q_x_v_x = rot_q.x() * this->GetX();
+    double q_y_v_y = rot_q.y() * this->GetY();
+    double q_z_v_z = rot_q.z() * this->GetZ();
+    double result_x =
+        (q_w_2 + q_x_2 - q_y_2 - q_z_2) * this->GetX() +
+        2.0 *
+            (rot_q.x() * (q_y_v_y + q_z_v_z) +
+             rot_q.w() * (this->GetZ() * rot_q.y() - this->GetY() * rot_q.z()));
+    double result_y =
+        (q_w_2 - q_x_2 + q_y_2 - q_z_2) * this->GetY() +
+        2.0 *
+            (rot_q.y() * (q_x_v_x + q_z_v_z) +
+             rot_q.w() * (this->GetX() * rot_q.z() - this->GetZ() * rot_q.x()));
+    double result_z =
+        (q_w_2 - q_x_2 - q_y_2 + q_z_2) * this->GetZ() +
+        2.0 *
+            (rot_q.z() * (q_x_v_x + q_y_v_y) +
+             rot_q.w() * (this->GetY() * rot_q.x() - this->GetX() * rot_q.y()));
+    ;
+    return R(result_x, result_y, result_z);
+  }
+
  protected:
-  Derived const* ToDerived() const { return static_cast<Derived const*>(this); }
+  inline Derived const* ToDerived() const {
+    return static_cast<Derived const*>(this);
+  }
 
  private:
   inline double GetX() const { return ToDerived()->x(); }

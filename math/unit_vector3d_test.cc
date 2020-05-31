@@ -109,5 +109,45 @@ TEST(UnitVector3dTest, TripleProduct) {
   EXPECT_DOUBLE_EQ(triple_product, 0.0);
 }
 
+TEST(UnitVector3dTest, RotateTest) {
+  UnitQuaternion q = UnitQuaternion::NormalizeAndCreate(0.0, 1.0, 0.0, 0.0,
+                                                        Epsilon::kOneBillionth)
+                         .ValueOrDie();
+  UnitVector3d result = UnitVector3d::kXAxis.Rotate(q);
+  EXPECT_TRUE(
+      result.GeometricallyEquals(UnitVector3d::kXAxis, Epsilon::kOneBillionth));
+
+  q = UnitQuaternion::NormalizeAndCreate(0.0, 0.0, 1.0, 0.0,
+                                         Epsilon::kOneBillionth)
+          .ValueOrDie();
+  result = UnitVector3d::kXAxis.Rotate(q);
+  EXPECT_TRUE(result.GeometricallyEquals(-UnitVector3d::kXAxis,
+                                         Epsilon::kOneBillionth));
+
+  q = UnitQuaternion::NormalizeAndCreate(std::cos(M_PI / 4), 0.0, 0.0,
+                                         std::sin(M_PI / 4),
+                                         Epsilon::kOneBillionth)
+          .ValueOrDie();
+  result = UnitVector3d::kXAxis.Rotate(q);
+  EXPECT_TRUE(
+      result.GeometricallyEquals(UnitVector3d::kYAxis, Epsilon::kOneBillionth));
+
+  q = UnitQuaternion::NormalizeAndCreate(std::cos(M_PI / 12), 0.0, 0.0,
+                                         std::sin(M_PI / 12),
+                                         Epsilon::kOneBillionth)
+          .ValueOrDie();
+  result = UnitVector3d::kXAxis.Rotate(q);
+  EXPECT_DOUBLE_EQ(result.x(), std::cos(M_PI / 6));
+  EXPECT_DOUBLE_EQ(result.y(), std::sin(M_PI / 6));
+  EXPECT_DOUBLE_EQ(result.z(), 0.0);
+
+  q = UnitQuaternion::NormalizeAndCreate(0.5, 0.5, 0.5, 0.5,
+                                         Epsilon::kOneBillionth)
+          .ValueOrDie();
+  result = UnitVector3d::kXAxis.Rotate(q);
+  EXPECT_TRUE(
+      result.GeometricallyEquals(UnitVector3d::kYAxis, Epsilon::kOneBillionth));
+}
+
 }  // namespace math
 }  // namespace robotics_common

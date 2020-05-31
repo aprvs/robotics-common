@@ -46,6 +46,7 @@ cc_library(
     deps = [
         ":epsilons",
         ":geometry_defs",
+        ":quaternion",
         "//common:error_or",
     ],
     visibility = ["//visibility:public"],

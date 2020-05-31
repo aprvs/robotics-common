@@ -1,6 +1,7 @@
 #include "robotics-common/math/vector3d.h"
 
 #include "gtest/gtest.h"
+#include "robotics-common/math/unit_vector3d.h"
 
 namespace robotics_common {
 namespace math {
@@ -97,6 +98,16 @@ TEST(Vector3dTest, TripleProductTest) {
       TripleProduct(Vector3d(1.0, 0.0, 0.0), Vector3d(0.0, 0.0, 2.0),
                     Vector3d(0.0, 1.0, 0.0)),
       -2.0);
+}
+
+TEST(Vector3dTest, RotateTest) {
+  UnitQuaternion q = UnitQuaternion::NormalizeAndCreate(0.5, 0.5, 0.5, 0.5,
+                                                        Epsilon::kOneBillionth)
+                         .ValueOrDie();
+  Vector3d result = Vector3d(2.0, 3.0, 4.0).Rotate(q);
+  EXPECT_DOUBLE_EQ(result.Length(), std::sqrt(29.0));
+  EXPECT_TRUE(result.GeometricallyEquals(Vector3d(4.0, 2.0, 3.0),
+                                         Epsilon::kOneBillionth));
 }
 
 }  // namespace math

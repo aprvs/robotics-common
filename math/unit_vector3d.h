@@ -24,23 +24,30 @@ class UnitVector3d : public ConstVector3d<UnitVector3d> {
   UnitVector3d(const UnitVector3d&) = default;
   UnitVector3d& operator=(const UnitVector3d&) = default;
 
+  double x() const { return x_; }
+  double y() const { return y_; }
+  double z() const { return z_; }
+
   UnitVector3d Cross(const UnitVector3d& other) const;
 
   template <typename U>
   U Cross(const U& other) const {
-    return static_cast<ConstVector3d<UnitVector3d> const*>(this)->Cross<U, U>(
-        other);
+    return ToBase()->Cross<U, U>(other);
   }
 
   void Negate();
 
   double Angle(const UnitVector3d& other) const;
 
-  double x() const { return x_; }
-  double y() const { return y_; }
-  double z() const { return z_; }
+  UnitVector3d Rotate(const UnitQuaternion& rotation) const {
+    return ToBase()->Rotate<UnitVector3d>(rotation);
+  }
 
  private:
+  ConstVector3d<UnitVector3d> const* ToBase() const {
+    return static_cast<ConstVector3d<UnitVector3d> const*>(this);
+  }
+
   friend class ConstVector3d<UnitVector3d>;
   UnitVector3d(double x, double y, double z);
   void Set(Axis3d axis, double value);
