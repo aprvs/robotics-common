@@ -17,8 +17,9 @@ UnitVector3d::UnitVector3d() : UnitVector3d(1.0, 0.0, 0.0) {}
 UnitVector3d::UnitVector3d(double x, double y, double z)
     : x_(x), y_(y), z_(z) {}
 
-common::ErrorOr<UnitVector3d> UnitVector3d::NormalizeAndCreate(
-    double x, double y, double z, Epsilon epsilon) {
+common::ErrorOr<UnitVector3d> UnitVector3d::Construct(double x, double y,
+                                                      double z,
+                                                      Epsilon epsilon) {
   double length = std::sqrt(x * x + y * y + z * z);
   if (length < EpsilonValue(epsilon)) {
     return common::Error::kInvalidArgument;

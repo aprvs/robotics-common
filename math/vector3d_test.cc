@@ -101,9 +101,9 @@ TEST(Vector3dTest, TripleProductTest) {
 }
 
 TEST(Vector3dTest, RotateTest) {
-  UnitQuaternion q = UnitQuaternion::NormalizeAndCreate(0.5, 0.5, 0.5, 0.5,
-                                                        Epsilon::kOneBillionth)
-                         .ValueOrDie();
+  UnitQuaternion q =
+      UnitQuaternion::Construct(0.5, 0.5, 0.5, 0.5, Epsilon::kOneBillionth)
+          .ValueOrDie();
   Vector3d result = Vector3d(2.0, 3.0, 4.0).Rotate(q);
   EXPECT_DOUBLE_EQ(result.Length(), std::sqrt(29.0));
   EXPECT_TRUE(result.GeometricallyEquals(Vector3d(4.0, 2.0, 3.0),

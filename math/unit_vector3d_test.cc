@@ -9,7 +9,7 @@ TEST(UnitVector3dTest, ConstructDestructTest) { UnitVector3d unit_vector; }
 
 TEST(UnitVector3dTest, NormalizeConstructTest) {
   for (size_t index = 0; index < 20; ++index) {
-    common::ErrorOr<UnitVector3d> result = UnitVector3d::NormalizeAndCreate(
+    common::ErrorOr<UnitVector3d> result = UnitVector3d::Construct(
         0.1 * index, -2.0 * index, index + 0.1, Epsilon::kTenMillionth);
     ASSERT_TRUE(result.HasValue());
     UnitVector3d unit_vector = result.ValueOrDie();
@@ -17,11 +17,10 @@ TEST(UnitVector3dTest, NormalizeConstructTest) {
   }
 
   common::ErrorOr<UnitVector3d> result =
-      UnitVector3d::NormalizeAndCreate(0.0, 0.0, 0.0, Epsilon::kTenMillionth);
+      UnitVector3d::Construct(0.0, 0.0, 0.0, Epsilon::kTenMillionth);
   ASSERT_FALSE(result.HasValue());
 
-  result = UnitVector3d::NormalizeAndCreate(1.1e-7, 0.0, 0.0,
-                                            Epsilon::kTenMillionth);
+  result = UnitVector3d::Construct(1.1e-7, 0.0, 0.0, Epsilon::kTenMillionth);
   ASSERT_TRUE(result.HasValue());
   UnitVector3d unit_vector = result.ValueOrDie();
   EXPECT_DOUBLE_EQ(unit_vector.Length(), 1.0);
@@ -91,11 +90,9 @@ TEST(UnitVector3dTest, EqualsCheckTest) {
 
 TEST(UnitVector3dTest, ComputeAngleBetweenVectors) {
   UnitVector3d v =
-      UnitVector3d::NormalizeAndCreate(1, 0, 0, Epsilon::kOneBillionth)
-          .ValueOrDie();
+      UnitVector3d::Construct(1, 0, 0, Epsilon::kOneBillionth).ValueOrDie();
   UnitVector3d w =
-      UnitVector3d::NormalizeAndCreate(1, 1, 0, Epsilon::kOneBillionth)
-          .ValueOrDie();
+      UnitVector3d::Construct(1, 1, 0, Epsilon::kOneBillionth).ValueOrDie();
   EXPECT_DOUBLE_EQ(v.Angle(w), M_PI * 0.25);
 }
 
@@ -110,39 +107,35 @@ TEST(UnitVector3dTest, TripleProduct) {
 }
 
 TEST(UnitVector3dTest, RotateTest) {
-  UnitQuaternion q = UnitQuaternion::NormalizeAndCreate(0.0, 1.0, 0.0, 0.0,
-                                                        Epsilon::kOneBillionth)
-                         .ValueOrDie();
+  UnitQuaternion q =
+      UnitQuaternion::Construct(0.0, 1.0, 0.0, 0.0, Epsilon::kOneBillionth)
+          .ValueOrDie();
   UnitVector3d result = UnitVector3d::kXAxis.Rotate(q);
   EXPECT_TRUE(
       result.GeometricallyEquals(UnitVector3d::kXAxis, Epsilon::kOneBillionth));
 
-  q = UnitQuaternion::NormalizeAndCreate(0.0, 0.0, 1.0, 0.0,
-                                         Epsilon::kOneBillionth)
+  q = UnitQuaternion::Construct(0.0, 0.0, 1.0, 0.0, Epsilon::kOneBillionth)
           .ValueOrDie();
   result = UnitVector3d::kXAxis.Rotate(q);
   EXPECT_TRUE(result.GeometricallyEquals(-UnitVector3d::kXAxis,
                                          Epsilon::kOneBillionth));
 
-  q = UnitQuaternion::NormalizeAndCreate(std::cos(M_PI / 4), 0.0, 0.0,
-                                         std::sin(M_PI / 4),
-                                         Epsilon::kOneBillionth)
+  q = UnitQuaternion::Construct(std::cos(M_PI / 4), 0.0, 0.0,
+                                std::sin(M_PI / 4), Epsilon::kOneBillionth)
           .ValueOrDie();
   result = UnitVector3d::kXAxis.Rotate(q);
   EXPECT_TRUE(
       result.GeometricallyEquals(UnitVector3d::kYAxis, Epsilon::kOneBillionth));
 
-  q = UnitQuaternion::NormalizeAndCreate(std::cos(M_PI / 12), 0.0, 0.0,
-                                         std::sin(M_PI / 12),
-                                         Epsilon::kOneBillionth)
+  q = UnitQuaternion::Construct(std::cos(M_PI / 12), 0.0, 0.0,
+                                std::sin(M_PI / 12), Epsilon::kOneBillionth)
           .ValueOrDie();
   result = UnitVector3d::kXAxis.Rotate(q);
   EXPECT_DOUBLE_EQ(result.x(), std::cos(M_PI / 6));
   EXPECT_DOUBLE_EQ(result.y(), std::sin(M_PI / 6));
   EXPECT_DOUBLE_EQ(result.z(), 0.0);
 
-  q = UnitQuaternion::NormalizeAndCreate(0.5, 0.5, 0.5, 0.5,
-                                         Epsilon::kOneBillionth)
+  q = UnitQuaternion::Construct(0.5, 0.5, 0.5, 0.5, Epsilon::kOneBillionth)
           .ValueOrDie();
   result = UnitVector3d::kXAxis.Rotate(q);
   EXPECT_TRUE(

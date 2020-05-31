@@ -7,12 +7,12 @@ namespace robotics_common {
 namespace math {
 
 TEST(UnitQuaternionTest, ConstructDestructTest) {
-  common::ErrorOr<UnitQuaternion> result = UnitQuaternion::NormalizeAndCreate(
-      0.1, 0.2, 0.3, 0.4, Epsilon::kOneBillionth);
+  common::ErrorOr<UnitQuaternion> result =
+      UnitQuaternion::Construct(0.1, 0.2, 0.3, 0.4, Epsilon::kOneBillionth);
   EXPECT_FALSE(result.HasValue());
 
-  result = UnitQuaternion::NormalizeAndCreate(0.428, 0.719, 0.208, -0.507,
-                                              Epsilon::kOneThousandth);
+  result = UnitQuaternion::Construct(0.428, 0.719, 0.208, -0.507,
+                                     Epsilon::kOneThousandth);
   ASSERT_TRUE(result.HasValue());
   UnitQuaternion q1 = result.ValueOrDie();
   EXPECT_DOUBLE_EQ(q1.w(), 0.42790202165427749);
@@ -28,9 +28,9 @@ TEST(UnitQuaternionTest, ConstructDestructTest) {
 }
 
 TEST(UnitQuaternionTest, InverseTest) {
-  UnitQuaternion q1 = UnitQuaternion::NormalizeAndCreate(0.5, -0.5, -0.5, -0.5,
-                                                         Epsilon::kOneBillionth)
-                          .ValueOrDie();
+  UnitQuaternion q1 =
+      UnitQuaternion::Construct(0.5, -0.5, -0.5, -0.5, Epsilon::kOneBillionth)
+          .ValueOrDie();
   UnitQuaternion q2 = ~q1;
   EXPECT_DOUBLE_EQ(q2.w(), 0.5);
   EXPECT_DOUBLE_EQ(q2.x(), 0.5);
@@ -39,9 +39,9 @@ TEST(UnitQuaternionTest, InverseTest) {
 }
 
 TEST(UnitQuaternionTest, MultiplicationTest) {
-  UnitQuaternion q1 = UnitQuaternion::NormalizeAndCreate(0.5, -0.5, -0.5, -0.5,
-                                                         Epsilon::kOneBillionth)
-                          .ValueOrDie();
+  UnitQuaternion q1 =
+      UnitQuaternion::Construct(0.5, -0.5, -0.5, -0.5, Epsilon::kOneBillionth)
+          .ValueOrDie();
   UnitQuaternion q2 = q1 * UnitQuaternion::kIdentity;
   EXPECT_DOUBLE_EQ(q2.w(), 0.5);
   EXPECT_DOUBLE_EQ(q2.x(), -0.5);
@@ -67,7 +67,7 @@ TEST(UnitQuaternionTest, MultiplicationTest) {
   EXPECT_DOUBLE_EQ(q4.z(), -0.5);
 
   const double kSqtHalf = 1.0 / std::sqrt(2.0);
-  common::ErrorOr<UnitQuaternion> result = UnitQuaternion::NormalizeAndCreate(
+  common::ErrorOr<UnitQuaternion> result = UnitQuaternion::Construct(
       kSqtHalf, kSqtHalf, 0.0, 0.0, Epsilon::kOneBillionth);
   ASSERT_TRUE(result.HasValue());
   UnitQuaternion q5 = result.ValueOrDie();
@@ -80,7 +80,7 @@ TEST(UnitQuaternionTest, MultiplicationTest) {
 
 TEST(UnitQuaternionTest, AngleTest) {
   const double kSqtHalf = 1.0 / std::sqrt(2.0);
-  common::ErrorOr<UnitQuaternion> result = UnitQuaternion::NormalizeAndCreate(
+  common::ErrorOr<UnitQuaternion> result = UnitQuaternion::Construct(
       kSqtHalf, kSqtHalf, 0.0, 0.0, Epsilon::kOneBillionth);
   ASSERT_TRUE(result.HasValue());
   UnitQuaternion q1 = result.ValueOrDie();

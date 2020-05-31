@@ -9,8 +9,9 @@ namespace math {
 const UnitQuaternion UnitQuaternion::kIdentity =
     UnitQuaternion(1.0, 0.0, 0.0, 0.0);
 
-common::ErrorOr<UnitQuaternion> UnitQuaternion::NormalizeAndCreate(
-    double w, double x, double y, double z, Epsilon epsilon) {
+common::ErrorOr<UnitQuaternion> UnitQuaternion::Construct(double w, double x,
+                                                          double y, double z,
+                                                          Epsilon epsilon) {
   double length = std::sqrt(w * w + x * x + y * y + z * z);
   if (std::fabs(length - 1.0) > EpsilonValue(epsilon)) {
     return common::Error::kInvalidArgument;

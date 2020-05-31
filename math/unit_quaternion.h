@@ -11,9 +11,8 @@ namespace math {
 class UnitQuaternion {
  public:
   static const UnitQuaternion kIdentity;
-  static common::ErrorOr<UnitQuaternion> NormalizeAndCreate(double w, double x,
-                                                            double y, double z,
-                                                            Epsilon epsilon);
+  static common::ErrorOr<UnitQuaternion> Construct(double w, double x, double y,
+                                                   double z, Epsilon epsilon);
 
   UnitQuaternion(const UnitQuaternion&) = default;
   UnitQuaternion& operator=(const UnitQuaternion&) = default;

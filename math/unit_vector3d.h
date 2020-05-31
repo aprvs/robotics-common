@@ -17,9 +17,8 @@ class UnitVector3d : public ConstVector3d<UnitVector3d> {
   static const UnitVector3d kZAxis;
   static const UnitVector3d kAxes[3];
 
-  static common::ErrorOr<UnitVector3d> NormalizeAndCreate(double x, double y,
-                                                          double z,
-                                                          Epsilon epsilon);
+  static common::ErrorOr<UnitVector3d> Construct(double x, double y, double z,
+                                                 Epsilon epsilon);
 
   UnitVector3d(const UnitVector3d&) = default;
   UnitVector3d& operator=(const UnitVector3d&) = default;
