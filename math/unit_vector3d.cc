@@ -21,7 +21,7 @@ common::ErrorOr<UnitVector3d> UnitVector3d::Construct(double x, double y,
                                                       double z,
                                                       Epsilon epsilon) {
   double length = std::sqrt(x * x + y * y + z * z);
-  if (length < EpsilonValue(epsilon)) {
+  if (std::fabs(length - 1.0) > EpsilonValue(epsilon)) {
     return common::Error::kInvalidArgument;
   }
   return UnitVector3d(x / length, y / length, z / length);
