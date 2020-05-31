@@ -8,11 +8,18 @@
 namespace robotics_common {
 namespace math {
 
+// Note: Using a forward declaration here to resolve a circular dependency issue
+// While this isn't ideal this enables UnitVector3d and UnitQuaternion to depend
+// on each other as inputs.
+class UnitVector3d;
+
 class UnitQuaternion {
  public:
   static const UnitQuaternion kIdentity;
   static common::ErrorOr<UnitQuaternion> Construct(double w, double x, double y,
                                                    double z, Epsilon epsilon);
+
+  static UnitQuaternion FromAxisAngle(double anngle, const UnitVector3d& axis);
 
   UnitQuaternion(const UnitQuaternion&) = default;
   UnitQuaternion& operator=(const UnitQuaternion&) = default;

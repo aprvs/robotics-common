@@ -1,5 +1,7 @@
 #include "robotics-common/math/unit_quaternion.h"
 
+#include "robotics-common/math/unit_vector3d.h"
+
 #include <cmath>
 
 namespace robotics_common {
@@ -9,6 +11,7 @@ namespace math {
 const UnitQuaternion UnitQuaternion::kIdentity =
     UnitQuaternion(1.0, 0.0, 0.0, 0.0);
 
+// static
 common::ErrorOr<UnitQuaternion> UnitQuaternion::Construct(double w, double x,
                                                           double y, double z,
                                                           Epsilon epsilon) {
@@ -17,6 +20,15 @@ common::ErrorOr<UnitQuaternion> UnitQuaternion::Construct(double w, double x,
     return common::Error::kInvalidArgument;
   }
   return UnitQuaternion(w / length, x / length, y / length, z / length);
+}
+
+// static
+UnitQuaternion UnitQuaternion::FromAxisAngle(double angle,
+                                             const UnitVector3d& axis) {
+  double half_angle = 0.5 * angle;
+  double sine = std::sin(half_angle);
+  return UnitQuaternion(std::cos(half_angle), sine * axis.x(), sine * axis.y(),
+                        sine * axis.z());
 }
 
 UnitQuaternion::UnitQuaternion(double w, double x, double y, double z)

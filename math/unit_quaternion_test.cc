@@ -3,6 +3,8 @@
 #include <cmath>
 #include "gtest/gtest.h"
 
+#include "robotics-common/math/unit_vector3d.h"
+
 namespace robotics_common {
 namespace math {
 
@@ -90,6 +92,22 @@ TEST(UnitQuaternionTest, AngleTest) {
   EXPECT_DOUBLE_EQ(q2.Angle(UnitQuaternion::kIdentity), M_PI);
 }
 
-}  // namespace math
+TEST(UnitQuaternionTest, AxisAngleTest) {
+  UnitQuaternion q =
+      UnitQuaternion::FromAxisAngle(M_PI / 3, UnitVector3d::kXAxis);
+  EXPECT_DOUBLE_EQ(q.w(), std::sqrt(0.75));
+  EXPECT_DOUBLE_EQ(q.x(), std::sqrt(0.25));
+  EXPECT_DOUBLE_EQ(q.y(), 0.0);
+  EXPECT_DOUBLE_EQ(q.z(), 0.0);
 
+  q = UnitQuaternion::FromAxisAngle(
+      M_PI / 3,
+      UnitVector3d::Construct(0.5, 0.5, 0.5, Epsilon::kOne).ValueOrDie());
+  EXPECT_DOUBLE_EQ(q.w(), std::sqrt(0.75));
+  EXPECT_DOUBLE_EQ(q.x(), std::sqrt(1.0 / 12.0));
+  EXPECT_DOUBLE_EQ(q.y(), std::sqrt(1.0 / 12.0));
+  EXPECT_DOUBLE_EQ(q.z(), std::sqrt(1.0 / 12.0));
+}
+
+}  // namespace math
 }  // namespace robotics_common

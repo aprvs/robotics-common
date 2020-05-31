@@ -33,32 +33,17 @@ cc_library(
 )
 
 cc_library(
-    name = "vector",
+    name = "geometry_basics",
     hdrs = [
         "const_vector3d.h",
+        "unit_quaternion.h",
         "unit_vector3d.h",
         "vector3d.h",
     ],
     srcs = [
+        "unit_quaternion.cc",
         "unit_vector3d.cc",
         "vector3d.cc",
-    ],
-    deps = [
-        ":epsilons",
-        ":geometry_defs",
-        ":quaternion",
-        "//common:error_or",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-cc_library(
-    name = "quaternion",
-    hdrs = [
-        "unit_quaternion.h",
-    ],
-    srcs = [
-        "unit_quaternion.cc",
     ],
     deps = [
         ":epsilons",
@@ -85,7 +70,7 @@ cc_test(
         "unit_vector3d_test.cc",
     ],
     deps = [
-        ":vector",
+        ":geometry_basics",
         "@com_googletest//:gtest_main",
     ],
 )
@@ -96,7 +81,7 @@ cc_test(
         "vector3d_test.cc",
     ],
     deps = [
-        ":vector",
+        ":geometry_basics",
         "@com_googletest//:gtest_main",
     ],
 )
@@ -107,7 +92,7 @@ cc_test(
         "unit_quaternion_test.cc",
     ],
     deps = [
-        ":quaternion",
+        ":geometry_basics",
         "@com_googletest//:gtest_main",
     ],
 )
