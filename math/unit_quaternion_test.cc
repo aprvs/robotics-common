@@ -109,5 +109,73 @@ TEST(UnitQuaternionTest, AxisAngleTest) {
   EXPECT_DOUBLE_EQ(q.z(), std::sqrt(1.0 / 12.0));
 }
 
+TEST(UnitQuaternionTest, FromTwistTest) {
+  UnitQuaternion q = UnitQuaternion::FromTwist(Vector3d(0.0, 0.0, 0.0));
+  EXPECT_DOUBLE_EQ(q.w(), 1.0);
+  EXPECT_DOUBLE_EQ(q.x(), 0.0);
+  EXPECT_DOUBLE_EQ(q.y(), 0.0);
+  EXPECT_DOUBLE_EQ(q.z(), 0.0);
+
+  q = UnitQuaternion::FromTwist(M_PI / 4.0 * Vector3d(1.0, 0.0, 0.0));
+  EXPECT_DOUBLE_EQ(q.w(), std::cos(M_PI / 8.0));
+  EXPECT_DOUBLE_EQ(q.x(), std::sin(M_PI / 8.0));
+  EXPECT_DOUBLE_EQ(q.y(), 0.0);
+  EXPECT_DOUBLE_EQ(q.z(), 0.0);
+
+  q = UnitQuaternion::FromTwist(M_PI / 4.0 * Vector3d(0.0, -1.0, 0.0));
+  EXPECT_DOUBLE_EQ(q.w(), std::cos(M_PI / 8.0));
+  EXPECT_DOUBLE_EQ(q.x(), 0.0);
+  EXPECT_DOUBLE_EQ(q.y(), -std::sin(M_PI / 8.0));
+  EXPECT_DOUBLE_EQ(q.z(), 0.0);
+
+  q = UnitQuaternion::FromTwist(Vector3d(1e-20, 1e-17, 1e-8));
+  EXPECT_DOUBLE_EQ(q.w(), 1.0);
+  EXPECT_DOUBLE_EQ(q.x(), 5e-21);
+  EXPECT_DOUBLE_EQ(q.y(), 5e-18);
+  EXPECT_DOUBLE_EQ(q.z(), 5e-9);
+  // check to make sure that the type safety is maintained
+  double norm = q.w() * q.w() + q.x() * q.x() + q.y() * q.y() + q.z() * q.z();
+  EXPECT_EQ(norm, 1.0);
+}
+
+TEST(UnitQuaternionTest, ToTwistTest) {
+  Vector3d twist = UnitQuaternion::kIdentity.Twist();
+  EXPECT_DOUBLE_EQ(twist.x(), 0.0);
+  EXPECT_DOUBLE_EQ(twist.y(), 0.0);
+  EXPECT_DOUBLE_EQ(twist.z(), 0.0);
+
+  twist = UnitQuaternion::FromAxisAngle(M_PI, UnitVector3d::kXAxis).Twist();
+  EXPECT_DOUBLE_EQ(twist.x(), M_PI);
+  EXPECT_DOUBLE_EQ(twist.y(), 0.0);
+  EXPECT_DOUBLE_EQ(twist.z(), 0.0);
+
+  twist = UnitQuaternion::FromAxisAngle(-M_PI, UnitVector3d::kXAxis).Twist();
+  EXPECT_DOUBLE_EQ(twist.x(), -M_PI);
+  EXPECT_DOUBLE_EQ(twist.y(), 0.0);
+  EXPECT_DOUBLE_EQ(twist.z(), 0.0);
+
+  twist =
+      UnitQuaternion::FromAxisAngle(-1.1 * M_PI, UnitVector3d::kXAxis).Twist();
+  EXPECT_DOUBLE_EQ(twist.x(), -0.9 * M_PI);
+  EXPECT_DOUBLE_EQ(twist.y(), 0.0);
+  EXPECT_DOUBLE_EQ(twist.z(), 0.0);
+
+  twist =
+      UnitQuaternion::FromAxisAngle(
+          -M_PI,
+          UnitVector3d::Construct(1.0, 1.0, 1.0, Epsilon::kOne).ValueOrDie())
+          .Twist();
+  EXPECT_DOUBLE_EQ(twist.x(), -M_PI / std::sqrt(3.0));
+  EXPECT_DOUBLE_EQ(twist.y(), -M_PI / std::sqrt(3.0));
+  EXPECT_DOUBLE_EQ(twist.z(), -M_PI / std::sqrt(3.0));
+}
+
+TEST(UnitQuaternionTest, GeometricallyEqualsTest) {
+  EXPECT_TRUE(UnitQuaternion::FromAxisAngle(M_PI, UnitVector3d::kXAxis)
+                  .GeometricallyEquals(UnitQuaternion::FromAxisAngle(
+                                           -M_PI, UnitVector3d::kXAxis),
+                                       Epsilon::kTenMillionth));
+}
+
 }  // namespace math
 }  // namespace robotics_common

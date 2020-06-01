@@ -12,14 +12,21 @@ namespace math {
 // While this isn't ideal this enables UnitVector3d and UnitQuaternion to depend
 // on each other as inputs.
 class UnitVector3d;
+class Vector3d;
 
 class UnitQuaternion {
  public:
+  constexpr static Epsilon kDefaultSmallAngleEpsilon = Epsilon::kTenMillionth;
+
   static const UnitQuaternion kIdentity;
   static common::ErrorOr<UnitQuaternion> Construct(double w, double x, double y,
                                                    double z, Epsilon epsilon);
 
   static UnitQuaternion FromAxisAngle(double angle, const UnitVector3d& axis);
+
+  static UnitQuaternion FromTwist(
+      const Vector3d& angular_twist,
+      Epsilon small_angle_epsilon = kDefaultSmallAngleEpsilon);
 
   UnitQuaternion(const UnitQuaternion&) = default;
   UnitQuaternion& operator=(const UnitQuaternion&) = default;
@@ -37,6 +44,10 @@ class UnitQuaternion {
   UnitQuaternion operator~() const;
 
   double Angle(const UnitQuaternion& other) const;
+
+  Vector3d Twist(Epsilon small_angle_epsilon = kDefaultSmallAngleEpsilon) const;
+
+  bool GeometricallyEquals(const UnitQuaternion& other, Epsilon epsilon) const;
 
  private:
   UnitQuaternion(double w, double x, double y, double z);

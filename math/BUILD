@@ -8,9 +8,11 @@ cc_library(
     name = "geometry_defs",
     hdrs = [
         "geometry_defs.h",
+        "angle_helper.h",
     ],
     srcs = [
         "geometry_defs.cc",
+        "angle_helper.cc",
     ],
     deps = [
         "//common:type_traits",
@@ -93,6 +95,18 @@ cc_test(
     ],
     deps = [
         ":geometry_basics",
+        "@com_googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "angle_helper_test",
+    srcs = [
+        "angle_helper_test.cc",
+    ],
+    deps = [
+        ":epsilons",
+        ":geometry_defs",
         "@com_googletest//:gtest_main",
     ],
 )
