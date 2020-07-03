@@ -10,6 +10,8 @@ class Vector3d : public ConstVector3d<Vector3d> {
  public:
   Vector3d(double x = 0.0, double y = 0.0, double z = 0.0);
 
+  static const Vector3d& Zero();
+
   Vector3d(const Vector3d&) = default;
   Vector3d& operator=(const Vector3d&) = default;
 

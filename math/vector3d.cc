@@ -5,6 +5,12 @@ namespace math {
 
 Vector3d::Vector3d(double x, double y, double z) : x_(x), y_(y), z_(z) {}
 
+// static
+const Vector3d& Vector3d::Zero() {
+  static const Vector3d kZero(0.0, 0.0, 0.0);
+  return kZero;
+}
+
 void Vector3d::Set(Axis3d axis, double value) {
   switch (axis) {
     case Axis3d::kX:
