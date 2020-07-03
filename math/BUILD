@@ -55,6 +55,20 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+cc_library(
+    name = "frame_manager",
+    hdrs = [
+        "frame_manager.h",
+    ],
+    srcs = [
+        "frame_manager.cc",
+    ],
+    deps = [
+        "//common:error_or",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 cc_test(
     name = "geometry_defs_test",
     srcs = [
@@ -107,6 +121,17 @@ cc_test(
     deps = [
         ":epsilons",
         ":geometry_defs",
+        "@com_googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "frame_manager_test",
+    srcs = [
+        "frame_manager_test.cc",
+    ],
+    deps = [
+        ":frame_manager",
         "@com_googletest//:gtest_main",
     ],
 )
