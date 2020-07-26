@@ -58,14 +58,19 @@ cc_library(
 )
 
 cc_library(
-    name = "frame_manager",
+    name = "frame",
     hdrs = [
         "frame_manager.h",
+        "frame_node.h",
+        "frame.h",
+        "transform_provider.h",
     ],
     srcs = [
         "frame_manager.cc",
+        "frame_node.cc",
     ],
     deps = [
+        ":geometry_basics",
         "//common:error_or",
     ],
     visibility = ["//visibility:public"],
@@ -144,7 +149,7 @@ cc_test(
         "frame_manager_test.cc",
     ],
     deps = [
-        ":frame_manager",
+        ":frame",
         "@com_googletest//:gtest_main",
     ],
 )
