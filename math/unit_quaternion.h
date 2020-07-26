@@ -19,6 +19,8 @@ class UnitQuaternion {
   constexpr static Epsilon kDefaultSmallAngleEpsilon = Epsilon::kTenMillionth;
 
   static const UnitQuaternion kIdentity;
+  static const UnitQuaternion& Identity();
+
   static common::ErrorOr<UnitQuaternion> Construct(double w, double x, double y,
                                                    double z, Epsilon epsilon);
 

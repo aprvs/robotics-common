@@ -13,6 +13,11 @@ const UnitQuaternion UnitQuaternion::kIdentity =
     UnitQuaternion(1.0, 0.0, 0.0, 0.0);
 
 // static
+const UnitQuaternion& UnitQuaternion::Identity() {
+  return UnitQuaternion::kIdentity;
+}
+
+// static
 common::ErrorOr<UnitQuaternion> UnitQuaternion::Construct(double w, double x,
                                                           double y, double z,
                                                           Epsilon epsilon) {

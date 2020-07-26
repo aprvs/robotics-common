@@ -37,12 +37,14 @@ cc_library(
 cc_library(
     name = "geometry_basics",
     hdrs = [
+        "transform.h",
         "const_vector3d.h",
         "unit_quaternion.h",
         "unit_vector3d.h",
         "vector3d.h",
     ],
     srcs = [
+        "transform.cc",
         "unit_quaternion.cc",
         "unit_vector3d.cc",
         "vector3d.cc",
@@ -92,6 +94,17 @@ cc_test(
     name = "unit_quaternion_test",
     srcs = [
         "unit_quaternion_test.cc",
+    ],
+    deps = [
+        ":geometry_basics",
+        "@com_googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "transform_test",
+    srcs = [
+        "transform_test.cc",
     ],
     deps = [
         ":geometry_basics",
