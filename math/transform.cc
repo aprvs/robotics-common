@@ -24,7 +24,8 @@ Transform Transform::Append(const Transform& post) const {
 }
 
 Transform Transform::operator~() const {
-  return Transform(~angular(), -linear().Rotate(~angular()));
+  const auto inverted_angular = ~angular();
+  return Transform(inverted_angular, -linear().Rotate(inverted_angular));
 }
 
 bool Transform::GeometricallyEquals(const Transform& other,
