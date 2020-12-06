@@ -37,6 +37,7 @@ cc_library(
 cc_library(
     name = "geometry_basics",
     hdrs = [
+        "frame.h",
         "transform.h",
         "const_vector3d.h",
         "unit_quaternion.h",
@@ -44,6 +45,7 @@ cc_library(
         "vector3d.h",
     ],
     srcs = [
+        "frame.cc",
         "transform.cc",
         "unit_quaternion.cc",
         "unit_vector3d.cc",
@@ -120,6 +122,17 @@ cc_test(
     deps = [
         ":epsilons",
         ":geometry_defs",
+        "@com_googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "frame_test",
+    srcs = [
+        "frame_test.cc",
+    ],
+    deps = [
+        ":geometry_basics",
         "@com_googletest//:gtest_main",
     ],
 )
