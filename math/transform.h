@@ -17,7 +17,12 @@ class Transform {
   static const Transform& Identity();
 
   const UnitQuaternion& angular() const { return angular_; }
+
+  void set_angular(const UnitQuaternion& angular) { angular_ = angular; }
+
   const Vector3d& linear() const { return linear_; }
+
+  void set_linear(const Vector3d& linear) { linear_ = linear; }
 
   Transform Prepend(const Transform& prev) const;
   Transform Append(const Transform& other) const;
