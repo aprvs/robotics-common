@@ -59,6 +59,24 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+cc_library(
+    name = "frame_manager",
+    hdrs = [
+        "frame_node.h",
+        "transform_provider.h",
+    ],
+    srcs = [
+        "frame_node.cc",
+    ],
+    deps = [
+        ":epsilons",
+        ":geometry_basics",
+        ":geometry_defs",
+        "//common:error_or",
+    ],
+    visibility = ["//visibility:public"],
+)
+
 cc_test(
     name = "geometry_defs_test",
     srcs = [
@@ -133,6 +151,17 @@ cc_test(
     ],
     deps = [
         ":geometry_basics",
+        "@com_googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "frame_node_test",
+    srcs = [
+        "frame_node_test.cc",
+    ],
+    deps = [
+        ":frame_manager",
         "@com_googletest//:gtest_main",
     ],
 )
