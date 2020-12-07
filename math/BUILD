@@ -62,10 +62,12 @@ cc_library(
 cc_library(
     name = "frame_manager",
     hdrs = [
+        "frame_manager.h",
         "frame_node.h",
         "transform_provider.h",
     ],
     srcs = [
+        "frame_manager.cc",
         "frame_node.cc",
     ],
     deps = [
@@ -159,6 +161,17 @@ cc_test(
     name = "frame_node_test",
     srcs = [
         "frame_node_test.cc",
+    ],
+    deps = [
+        ":frame_manager",
+        "@com_googletest//:gtest_main",
+    ],
+)
+
+cc_test(
+    name = "frame_manager_test",
+    srcs = [
+        "frame_manager_test.cc",
     ],
     deps = [
         ":frame_manager",
