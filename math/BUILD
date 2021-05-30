@@ -6,44 +6,36 @@ licenses(["notice"])
 
 cc_library(
     name = "geometry_defs",
-    hdrs = [
-        "geometry_defs.h",
-        "angle_helper.h",
-    ],
     srcs = [
-        "geometry_defs.cc",
         "angle_helper.cc",
+        "geometry_defs.cc",
     ],
+    hdrs = [
+        "angle_helper.h",
+        "geometry_defs.h",
+    ],
+    visibility = ["//visibility:public"],
     deps = [
         "//common:type_traits",
     ],
-    visibility = ["//visibility:public"],
 )
 
 cc_library(
     name = "epsilons",
-    hdrs = [
-        "epsilons.h",
-    ],
     srcs = [
         "epsilons.cc",
     ],
+    hdrs = [
+        "epsilons.h",
+    ],
+    visibility = ["//visibility:public"],
     deps = [
         "//common:type_traits",
     ],
-    visibility = ["//visibility:public"],
 )
 
 cc_library(
     name = "geometry_basics",
-    hdrs = [
-        "frame.h",
-        "transform.h",
-        "const_vector3d.h",
-        "unit_quaternion.h",
-        "unit_vector3d.h",
-        "vector3d.h",
-    ],
     srcs = [
         "frame.cc",
         "transform.cc",
@@ -51,32 +43,40 @@ cc_library(
         "unit_vector3d.cc",
         "vector3d.cc",
     ],
+    hdrs = [
+        "const_vector3d.h",
+        "frame.h",
+        "transform.h",
+        "unit_quaternion.h",
+        "unit_vector3d.h",
+        "vector3d.h",
+    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":epsilons",
         ":geometry_defs",
         "//common:error_or",
     ],
-    visibility = ["//visibility:public"],
 )
 
 cc_library(
     name = "frame_manager",
+    srcs = [
+        "frame_manager.cc",
+        "frame_node.cc",
+    ],
     hdrs = [
         "frame_manager.h",
         "frame_node.h",
         "transform_provider.h",
     ],
-    srcs = [
-        "frame_manager.cc",
-        "frame_node.cc",
-    ],
+    visibility = ["//visibility:public"],
     deps = [
         ":epsilons",
         ":geometry_basics",
         ":geometry_defs",
         "//common:error_or",
     ],
-    visibility = ["//visibility:public"],
 )
 
 cc_test(
